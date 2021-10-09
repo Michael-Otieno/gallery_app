@@ -82,3 +82,8 @@ class ImageTestClass(TestCase):
         self.assertTrue(len(changed_image)>=0)
 
 
+    def test_get_image_by_id(self):
+        self.image.save_image()
+        image_found=self.image.get_image_by_id(self.image.id)
+        image=Image.objects.filter(id=self.image.id)
+        self.assertTrue(image_found,image)
