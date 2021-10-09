@@ -38,3 +38,10 @@ class LocationTestClass(TestCase):
         self.location.save_location()
         locations=Location.get_locations()
         self.assertTrue(len(locations)>=1)
+
+    def test_update_location(self):
+        self.location.save_location()
+        location=Location.objects.filter(name='Nairobi').update(name='Kisumu')
+        self.updated_location=Location.objects.get(name='Kisumu')
+        self.assertEqual(self.updated_location.name,'Kisumu')
+

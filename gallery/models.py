@@ -27,6 +27,9 @@ class Location(models.Model):
     def save_location(self):
         self.save()
 
+    def update_location(cls,id,value):
+        cls.objects.filter(id=id).update(image=value)
+
 class Image(models.Model):
     image = models.ImageField(upload_to='images/')
     name = models.CharField(max_length=100)
