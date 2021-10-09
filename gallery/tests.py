@@ -92,3 +92,14 @@ class ImageTestClass(TestCase):
         self.image.save_image()
         image_found=self.image.filter_by_location(location='Nairobi')
         self.assertTrue(len(image_found)>=0)
+
+    def search_image_by_category(self):
+        self.image.save_image()
+        category='Tour'
+        found_image=self.image.search_by_category(category)
+        self.assertTrue(len(found_image)>=0)
+
+    def tearDown(self):
+        Image.objects.all().delete()
+        Location.objects.all().delete()
+        Category.objects.all().delete()
