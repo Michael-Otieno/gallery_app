@@ -21,3 +21,10 @@ class CategoryTestClass(TestCase):
         self.category.delete_category()
         category=Category.objects.all()
         self.assertTrue(len(category)<=0)
+
+class LocationTestClass(TestCase):
+    def setUp(self):
+        self.location=Location(name='Nairobi')
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.location,Location))
