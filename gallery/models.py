@@ -44,6 +44,9 @@ class Image(models.Model):
     category=models.ForeignKey(Category, on_delete=models.CASCADE)
     location=models.ForeignKey(Location, on_delete=models.CASCADE)
 
+    @classmethod
+    def update_image(cls,id,value):
+        cls.objects.filter(id=id).update(image=value)
     def __str__(self):
         return self.name
 
@@ -52,3 +55,5 @@ class Image(models.Model):
 
     def delete_image(self):
         self.delete()
+
+    

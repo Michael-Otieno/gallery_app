@@ -75,4 +75,10 @@ class ImageTestClass(TestCase):
         images=Image.objects.all()
         self.assertTrue(len(images)<=0)
 
+    def test_update_image(self):
+        self.image.save_image()
+        self.image.update_image(self.image.id, 'photos/test.jpg')
+        changed_image=Image.objects.filter(image='photos/test.jpg')
+        self.assertTrue(len(changed_image)>=0)
+
 
