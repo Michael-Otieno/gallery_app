@@ -87,3 +87,8 @@ class ImageTestClass(TestCase):
         image_found=self.image.get_image_by_id(self.image.id)
         image=Image.objects.filter(id=self.image.id)
         self.assertTrue(image_found,image)
+
+    def test_search_image_by_location(self):
+        self.image.save_image()
+        image_found=self.image.filter_by_location(location='Nairobi')
+        self.assertTrue(len(image_found)>=0)
