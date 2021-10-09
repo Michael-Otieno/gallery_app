@@ -45,3 +45,11 @@ class LocationTestClass(TestCase):
         self.updated_location=Location.objects.get(name='Kisumu')
         self.assertEqual(self.updated_location.name,'Kisumu')
 
+    def test_delete_location(self):
+        self.location.save_location()
+        self.location.delete_location()
+        location=Location.objects.all()
+        self.assertTrue(len(location)==0)
+
+
+
