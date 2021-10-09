@@ -13,6 +13,7 @@ class Category(models.Model):
     def delete_category(self):
         self.delete()
 
+
 class Location(models.Model):
     name=models.CharField(max_length=60)
 
@@ -32,7 +33,8 @@ class Location(models.Model):
 
     def delete_location(self):
         self.delete()
-        
+
+
 class Image(models.Model):
     image = models.ImageField(upload_to='images/')
     name = models.CharField(max_length=100)
