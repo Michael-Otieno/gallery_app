@@ -13,3 +13,14 @@ def location(request, location):
     print(images)
     return render(request,'gallery/location.html',{'location_images':images})
 
+def search(request):
+    if 'searchedimage' in request.GET and request.GET['searchedimage']:
+        category=request.GET.get('searchedimage')
+        searched_images=Image.search_by_category(category)
+        message=f'{category}'
+        print(searched_images)
+        return render(request, 'gallery/search.html',{'message':message,'images':searched_images})
+    
+    else:
+        message='You have not searched for any image category'
+        return render(request,'gallery/search.html',{'message':message})
