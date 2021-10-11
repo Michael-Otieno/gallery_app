@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gallery',
     'bootstrap4',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +130,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
@@ -133,7 +140,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+
+cloudinary.config( 
+  cloud_name = "dnduhjuul", 
+  api_key = "758142132227254", 
+  api_secret = "DUAe598cILMJIJ2_m_9pMOKUYTQ",
+  secure = True
+)

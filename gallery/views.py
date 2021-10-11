@@ -1,26 +1,39 @@
+
 from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Image,Location
+from django.http import Http404
+from .models import Location, Category, Image
+from django.core.exceptions import ObjectDoesNotExist
+
+
 # Create your views here.
 def main(request):
-    images=Image.objects.all()
-    locations=Location.get_locations()
-    print(locations)
-    return render(request,'galleries/main.html',{'images:':images[::-1],'locations':locations})
+    try:
+        images = Image.objects.all()
+        category = Category.objects.all()
+        location = Location.objects.all()
+    except ObjectDoesNotExist:
+        raise Http404()
+    return render(request, 'index.html', {'images': images, 'category': category, 'location': location})
 
-def location(request, location):
-    images= Image.filter_by_location(location)
-    print(images)
-    return render(request,'galleries/location.html',{'location_images':images})
 
-def search(request):
-    if 'searchedimage' in request.GET and request.GET['searchedimage']:
-        category=request.GET.get('searchedimage')
-        searched_images=Image.search_by_category(category)
-        message=f'{category}'
-        print(searched_images)
-        return render(request, 'galleries/search.html',{'message':message,'images':searched_images})
-    
+def search_images(request):
+    if 'category' in request.GET and request.GET["category"]:
+        search_term = request.GET.get("category")
+        searched_category = Image.search_by_category(search_term)
+        message = f"{search_term}"
+        print(searched_category)
+
+        return render(request, 'search.html', {"message": message, "image": searched_category})
+
     else:
-        message='You have not searched for any image category'
-        return render(request,'galleries/search.html',{'message':message})
+        message = "You haven't searched for any term"
+        return render(request, 'search.html', {'message': message})
+
+
+def view_by_location(request, location):
+    try:
+        image_location = Image.filter_by_location(location)
+        message = location
+    except ObjectDoesNotExist:
+        raise Http404()
+    return render(request, 'location.html', {"location": image_location, 'message': location})

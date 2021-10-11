@@ -1,13 +1,13 @@
-from django.conf.urls import url
+from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns=[
-    url('^$',views.main, name='main'),
-    url('^search/',views.search,name='search'),
-    url('^location/(?P<location>\w+)/',views.location,name='location')
+    path('',views.main, name='main'),
+    path('search/',views.search_images,name='searchPage'),
+    path('location/<location>/',views.view_by_location,name='locationPage')
 ]
 
 if settings.DEBUG:

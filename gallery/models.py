@@ -1,78 +1,57 @@
 from django.db import models
-
+from cloudinary.models import CloudinaryField
 # Create your models here.
-class Category(models.Model):
-    name = models.CharField(max_length =60)
-
-    def __str__(self):
-        return self.name
-
-    def save_category(self):
-        self.save()
-
-    def delete_category(self):
-        self.delete()
-
 
 class Location(models.Model):
-    name=models.CharField(max_length=60)
-
-    @classmethod
-    def get_locations(cls):
-        locations=Location.objects.all()
-        return locations
+    name = models.CharField(max_length =30)
 
     def __str__(self):
         return self.name
+    
+class Category(models.Model):
+    name = models.CharField(max_length =30)
 
-    def save_location(self):
-        self.save()
-
-    def update_location(cls,id,value):
-        cls.objects.filter(id=id).update(image=value)
-
-    def delete_location(self):
-        self.delete()
-
-
+    def __str__(self):
+        return self.name
+    
 class Image(models.Model):
-    image = models.ImageField(upload_to='images/')
-    name = models.CharField(max_length=100)
-    description=models.TextField()
-    author=models.CharField(max_length=60,default='admin')
-    pub_date=models.DateTimeField(auto_now_add=True)
-    category=models.ForeignKey(Category, on_delete=models.CASCADE)
-    location=models.ForeignKey(Location, on_delete=models.CASCADE)
+    image = CloudinaryField('image')
+    image_name = models.CharField(max_length=40)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE,default='')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,default='')
 
-    @classmethod
-    def update_image(cls,id,value):
-        cls.objects.filter(id=id).update(image=value)
 
-    @classmethod
-    def filter_by_location(cls,location):
-        image_location=Image.objects.filter(name=location).all()
-        return image_location
-
-    @classmethod
-    def get_image_by_id(cls,id):
-        image=cls.objects.filter(id=id).all()
-        return image
-
-    @classmethod
-    def search_by_category(cls,category):
-        images=cls.objects.filter(category_name_contains=category)
-        return images
 
     def __str__(self):
-        return self.name
-
+        return self.image_name
+    
     def save_image(self):
         self.save()
 
+    @classmethod
+    def search_by_category(cls,search_term):
+        image = cls.objects.filter(category__name__icontains=search_term)
+        return image
+        
     def delete_image(self):
         self.delete()
+    
+    @classmethod
+    def update_image(cls, id, value):
+        cls.objects.filter(id=id).update(image=value)
+        
+    @classmethod
+    def get_image_by_id(cls, id):
+        image = cls.objects.filter(id=id).all()
+        return image
+    
+    @classmethod
+    def filter_by_location(cls, location):
+        img_location = Image.objects.filter(location__name=location).all()
+        return img_location
 
     class Meta:
-        ordering=['pub_date']
-
+        ordering = ['date']
     
